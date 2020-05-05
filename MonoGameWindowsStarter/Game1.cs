@@ -11,11 +11,13 @@ namespace MonoGameWindowsStarter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Texture2D backgroundTexture;
+        Rectangle backgroundRect;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            Content.RootDirectory = "Content";  
         }
 
         /// <summary>
@@ -26,7 +28,15 @@ namespace MonoGameWindowsStarter
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            //background image is 200 x 512
+            graphics.PreferredBackBufferWidth = 300;  //1.5 X width
+            graphics.PreferredBackBufferHeight = 768;  //1.5 X height
+            graphics.ApplyChanges();
+
+            backgroundRect.Width = graphics.PreferredBackBufferWidth;  //width of frame
+            backgroundRect.Height = graphics.PreferredBackBufferHeight;  //height of frame
+            backgroundRect.X = 0;
+            backgroundRect.Y = 0;
 
             base.Initialize();
         }
@@ -40,6 +50,7 @@ namespace MonoGameWindowsStarter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            backgroundTexture = Content.Load<Texture2D>("Background");
             // TODO: use this.Content to load your game content here
         }
 
@@ -73,10 +84,13 @@ namespace MonoGameWindowsStarter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+            spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
