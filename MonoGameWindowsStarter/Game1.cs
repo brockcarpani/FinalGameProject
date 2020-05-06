@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace MonoGameWindowsStarter
 {
@@ -17,10 +18,14 @@ namespace MonoGameWindowsStarter
 
         Player player;
 
+        List<Platform> platforms;
+        AxisList world;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";  
+            Content.RootDirectory = "Content";
+            platforms = new List<Platform>();
         }
 
         /// <summary>
@@ -63,6 +68,19 @@ namespace MonoGameWindowsStarter
                 playerTextures[i] = Content.Load<Texture2D>("Jump__00" + i);
             }
             player = new Player(playerTextures);
+
+            // Platforms
+            Texture2D pixel = Content.Load<Texture2D>("pixel");
+            Sprite pix = new Sprite(new Rectangle(0, 0, 100, 25), pixel);
+            platforms.Add(new Platform(new BoundingRectangle(80, 700, 200, 25), pix));
+            platforms.Add(new Platform(new BoundingRectangle(0, 999, 600, 25), pix));
+
+            // Add the platforms to the axis list
+            world = new AxisList();
+            foreach (Platform platform in platforms)
+            {
+                world.AddGameObject(platform);
+            }
         }
 
         /// <summary>
@@ -102,7 +120,14 @@ namespace MonoGameWindowsStarter
 
             spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
 
+            // Draw the player
             player.Draw(spriteBatch, gameTime);
+
+            // Draw the platforms 
+            platforms.ForEach(platform =>
+            {
+                platform.Draw(spriteBatch);
+            });
 
             spriteBatch.End();
             base.Draw(gameTime);
