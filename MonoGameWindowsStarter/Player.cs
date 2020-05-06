@@ -15,7 +15,7 @@ namespace MonoGameWindowsStarter
         /// <summary>
         /// A spritesheet containing a santa image
         /// </summary>
-        Texture2D spritesheet;
+        Texture2D[] spritesheet;
 
         /// <summary>
         /// The portion of the spritesheet that is the santa
@@ -24,14 +24,14 @@ namespace MonoGameWindowsStarter
         {
             X = 0,
             Y = 0,
-            Width = 259,
-            Height = 171
+            Width = 407,
+            Height = 536
         };
 
         /// <summary>
         /// The origin of the santa sprite
         /// </summary>
-        Vector2 origin = new Vector2(130, 1);
+        Vector2 origin = new Vector2(203, 1);
 
         /// <summary>
         /// The angle the santa should tilt
@@ -50,11 +50,19 @@ namespace MonoGameWindowsStarter
 
         private SpriteEffects effects = SpriteEffects.None;
 
+        private int frameNumber = 0;
+
+        // A timer for animations
+        TimeSpan animationTimer = new TimeSpan(0);
+
+        // The speed of the walking animation
+        const int FRAME_RATE = 100;
+
         /// <summary>
         /// Constructs a player
         /// </summary>
         /// <param name="spritesheet">The player's spritesheet</param>
-        public Player(Texture2D spritesheet)
+        public Player(Texture2D[] spritesheet)
         {
             this.spritesheet = spritesheet;
             this.Position = new Vector2(200, 200);
@@ -89,20 +97,24 @@ namespace MonoGameWindowsStarter
                 direction.X += 1;
                 effects = SpriteEffects.None;
             }
-            if (keyboard.IsKeyDown(Keys.Up) || keyboard.IsKeyDown(Keys.W))
-            {
-                direction.Y -= 1;
-            }
-            if (keyboard.IsKeyDown(Keys.Down) || keyboard.IsKeyDown(Keys.S))
-            {
-                direction.Y += 1;
-            }
 
             // Caclulate the tilt of the santa
-            angle = 0.3f * direction.X;
+            angle = 0.05f * direction.X;
 
             // Move the santa
             Position += (float)gameTime.ElapsedGameTime.TotalSeconds * Speed * direction;
+
+            // Update the frame number of the player jumping
+            animationTimer += gameTime.ElapsedGameTime;
+            if (animationTimer.TotalMilliseconds > FRAME_RATE * 2)
+            {
+                frameNumber++;
+                if (frameNumber > 9)
+                {
+                    frameNumber = 0;
+                }
+                animationTimer = new TimeSpan(0);
+            }
         }
 
         /// <summary>
@@ -112,7 +124,7 @@ namespace MonoGameWindowsStarter
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             // Render the santa
-            spriteBatch.Draw(spritesheet, Position, sourceRect, Color.White, angle, origin, 1f, effects, 0.7f);
+            spriteBatch.Draw(spritesheet[frameNumber], Position, sourceRect, Color.White, angle, origin, 0.3f, effects, 0.7f);
         }
 
     }

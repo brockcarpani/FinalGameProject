@@ -11,8 +11,11 @@ namespace MonoGameWindowsStarter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
         Texture2D backgroundTexture;
         Rectangle backgroundRect;
+
+        Player player;
 
         public Game1()
         {
@@ -29,8 +32,8 @@ namespace MonoGameWindowsStarter
         protected override void Initialize()
         {
             //background image is 200 x 512
-            graphics.PreferredBackBufferWidth = 300;  //1.5 X width
-            graphics.PreferredBackBufferHeight = 768;  //1.5 X height
+            graphics.PreferredBackBufferWidth = 600;  //1.5 X width
+            graphics.PreferredBackBufferHeight = 1024;  //1.5 X height
             graphics.ApplyChanges();
 
             backgroundRect.Width = graphics.PreferredBackBufferWidth;  //width of frame
@@ -50,8 +53,16 @@ namespace MonoGameWindowsStarter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Background
             backgroundTexture = Content.Load<Texture2D>("Background");
-            // TODO: use this.Content to load your game content here
+
+            // Player
+            Texture2D[] playerTextures = new Texture2D[10];
+            for (int i = 0; i < 10; i++)
+            {
+                playerTextures[i] = Content.Load<Texture2D>("Jump__00" + i);
+            }
+            player = new Player(playerTextures);
         }
 
         /// <summary>
@@ -74,6 +85,7 @@ namespace MonoGameWindowsStarter
                 Exit();
 
             // TODO: Add your update logic here
+            player.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -89,6 +101,8 @@ namespace MonoGameWindowsStarter
             spriteBatch.Begin();
 
             spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
+
+            player.Draw(spriteBatch, gameTime);
 
             spriteBatch.End();
             base.Draw(gameTime);
