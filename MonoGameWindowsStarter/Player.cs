@@ -28,10 +28,12 @@ namespace MonoGameWindowsStarter
             Height = 536
         };
 
+        public BoundingRectangle Bounds => new BoundingRectangle(Position - origin, 75, 144);
+
         /// <summary>
         /// The origin of the santa sprite
         /// </summary>
-        Vector2 origin = new Vector2(203, 1);
+        Vector2 origin = new Vector2(61, 1);
 
         /// <summary>
         /// The angle the santa should tilt
@@ -41,7 +43,7 @@ namespace MonoGameWindowsStarter
         /// <summary>
         /// The player's position in the world
         /// </summary>
-        public Vector2 Position { get; set; }
+        public Vector2 Position = new Vector2(200, 200);
 
         /// <summary>
         /// How fast the player moves
@@ -58,6 +60,20 @@ namespace MonoGameWindowsStarter
         // The speed of the walking animation
         const int FRAME_RATE = 100;
 
+        // The duration of a player's jump, in milliseconds
+        const int JUMP_TIME = 500;
+
+        // A timer for jumping
+        TimeSpan jumpTimer = new TimeSpan(0);
+
+        bool isJumping = false;
+
+        float v0 = 0f;
+        float a = -9.8f;
+        float t = 0;
+
+        Vector2 Velocity;
+
         /// <summary>
         /// Constructs a player
         /// </summary>
@@ -65,7 +81,7 @@ namespace MonoGameWindowsStarter
         public Player(Texture2D[] spritesheet)
         {
             this.spritesheet = spritesheet;
-            this.Position = new Vector2(200, 200);
+            Velocity = Vector2.Zero;
         }
 
         /// <summary>
@@ -74,35 +90,24 @@ namespace MonoGameWindowsStarter
         /// <param name="gameTime">The GameTime object</param>
         public void Update(GameTime gameTime)
         {
-            Vector2 direction = Vector2.Zero;
-
-            // Use GamePad for input
-            var gamePad = GamePad.GetState(0);
-
-            // The thumbstick value is a vector2 with X & Y between [-1f and 1f] and 0 if no GamePad is available
-            direction.X = gamePad.ThumbSticks.Left.X;
-
-            // We need to inverty the Y axis
-            direction.Y = -gamePad.ThumbSticks.Left.Y;
-
             // Override with keyboard input
             var keyboard = Keyboard.GetState();
             if (keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.A))
             {
-                direction.X -= 1;
+                Position.X += (float)gameTime.ElapsedGameTime.TotalSeconds * Speed * -1;
                 effects = SpriteEffects.FlipHorizontally;
             }
             if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D))
             {
-                direction.X += 1;
+                Position.X += (float)gameTime.ElapsedGameTime.TotalSeconds * Speed * 1;
                 effects = SpriteEffects.None;
             }
 
             // Caclulate the tilt of the santa
-            angle = 0.05f * direction.X;
+            angle = 0.00f * Velocity.X;
 
             // Move the santa
-            Position += (float)gameTime.ElapsedGameTime.TotalSeconds * Speed * direction;
+            //Position.X += (float)gameTime.ElapsedGameTime.TotalSeconds * Speed * Velocity.X;
 
             // Update the frame number of the player jumping
             animationTimer += gameTime.ElapsedGameTime;
@@ -115,6 +120,9 @@ namespace MonoGameWindowsStarter
                 }
                 animationTimer = new TimeSpan(0);
             }
+
+            Position.Y -= Velocity.Y * 6;
+            jump(gameTime);
         }
 
         /// <summary>
@@ -127,5 +135,33 @@ namespace MonoGameWindowsStarter
             spriteBatch.Draw(spritesheet[frameNumber], Position, sourceRect, Color.White, angle, origin, 0.3f, effects, 0.7f);
         }
 
+        public void jump(GameTime gameTime)
+        {
+            if (!isJumping)
+            {
+                isJumping = true;
+                v0 = 3;
+            }
+            else
+            {
+                Velocity.Y = (float)(v0 + (a * t));
+                t += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        public void CheckForPlatformCollision(IEnumerable<IBoundable> platforms)
+        {
+
+            foreach (Platform platform in platforms)
+            {
+                if (Bounds.CollidesWith(platform.Bounds))
+                {
+                    Position.Y = platform.Bounds.Y -this.Bounds.Height - 1;
+                    Velocity.Y = 0;
+                    t = 0;
+                    isJumping = false;
+                }
+            }
+        }
     }
 }
