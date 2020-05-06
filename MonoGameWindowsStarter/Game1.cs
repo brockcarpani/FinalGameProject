@@ -104,6 +104,7 @@ namespace MonoGameWindowsStarter
 
             // TODO: Add your update logic here
             player.Update(gameTime);
+            player.CheckForPlatformCollision(platforms);
 
             base.Update(gameTime);
         }
