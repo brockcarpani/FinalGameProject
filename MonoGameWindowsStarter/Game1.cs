@@ -127,7 +127,7 @@ namespace MonoGameWindowsStarter
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
-            Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, player.Position.Y) - player.Position;
+            Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - player.Position;
             var t = Matrix.CreateTranslation(0, offset.Y, 0);
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
             //spriteBatch.Begin();
