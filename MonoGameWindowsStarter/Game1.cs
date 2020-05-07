@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System;
 
 namespace MonoGameWindowsStarter
 {
@@ -20,6 +21,10 @@ namespace MonoGameWindowsStarter
 
         List<Platform> platforms;
         AxisList world;
+
+        Random random = new Random();
+
+        Sprite pix;
 
         public Game1()
         {
@@ -58,6 +63,10 @@ namespace MonoGameWindowsStarter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+#if VISUAL_DEBUG
+            VisualDebugging.LoadContent(Content);
+#endif
+
             // Background
             backgroundTexture = Content.Load<Texture2D>("Background");
 
@@ -71,8 +80,7 @@ namespace MonoGameWindowsStarter
 
             // Platforms
             Texture2D pixel = Content.Load<Texture2D>("pixel");
-            Sprite pix = new Sprite(new Rectangle(0, 0, 100, 25), pixel);
-            platforms.Add(new Platform(new BoundingRectangle(80, 700, 200, 25), pix));
+            pix = new Sprite(new Rectangle(0, 0, 100, 25), pixel);
             platforms.Add(new Platform(new BoundingRectangle(0, 999, 600, 25), pix));
 
             // Add the platforms to the axis list
@@ -81,6 +89,8 @@ namespace MonoGameWindowsStarter
             {
                 world.AddGameObject(platform);
             }
+
+            world.SpawnNewPlatforms(player, random, pix, platforms);
         }
 
         /// <summary>
@@ -104,7 +114,7 @@ namespace MonoGameWindowsStarter
 
             // TODO: Add your update logic here
             player.Update(gameTime);
-            player.CheckForPlatformCollision(platforms);
+            player.CheckForPlatformCollision(platforms, world, random, pix);
 
             base.Update(gameTime);
         }

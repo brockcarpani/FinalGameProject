@@ -154,5 +154,28 @@ namespace MonoGameWindowsStarter
             }
             return pairs;
         }
+
+        public void SpawnNewPlatforms(Player p, Random random, Sprite pix, List<Platform> platforms)
+        {
+            float x1 = random.Next(0, 500);
+            while (x1 > p.Position.X && x1 < p.Position.X + p.Bounds.Width)
+            {
+                x1 = random.Next(0, 500);
+            }
+            float y1 = random.Next((int)p.Position.Y + 50, (int)p.Position.Y + 100);
+
+            //float x2 = random.Next(300, 600);
+            //float y2 = random.Next((int)p.Position.Y + 50, (int)p.Position.Y + 100);
+
+            Platform p1 = new Platform(new BoundingRectangle(x1, y1, 100, 25), pix);
+            //Platform p2 = new Platform(new BoundingRectangle(x2, y2, 100, 25), pix);
+
+            platforms.Add(p1);
+            //platforms.Add(p2);
+
+            // Add the platforms to the axis list
+            this.AddGameObject(p1);
+            //this.AddGameObject(p2);
+        }
     }
 }
