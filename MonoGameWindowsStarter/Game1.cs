@@ -48,9 +48,9 @@ namespace MonoGameWindowsStarter
             graphics.ApplyChanges();
 
             backgroundRect.Width = graphics.PreferredBackBufferWidth;  //width of frame
-            backgroundRect.Height = graphics.PreferredBackBufferHeight;  //height of frame
+            backgroundRect.Height = 3584; //graphics.PreferredBackBufferHeight;  //height of frame
             backgroundRect.X = 0;
-            backgroundRect.Y = 0;
+            backgroundRect.Y = -2560; //0;
 
             base.Initialize();
         }
@@ -69,7 +69,7 @@ namespace MonoGameWindowsStarter
 #endif
 
             // Background
-            backgroundTexture = Content.Load<Texture2D>("Background");
+            backgroundTexture = Content.Load<Texture2D>("Background-3584");
 
             // Player
             Texture2D[] playerTextures = new Texture2D[10];
