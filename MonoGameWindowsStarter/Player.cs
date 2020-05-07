@@ -33,7 +33,7 @@ namespace MonoGameWindowsStarter
         /// <summary>
         /// The origin of the santa sprite
         /// </summary>
-        Vector2 origin = new Vector2(61, 1);
+        Vector2 origin = new Vector2(-20, 1); //61
 
         /// <summary>
         /// The angle the santa should tilt
@@ -43,7 +43,7 @@ namespace MonoGameWindowsStarter
         /// <summary>
         /// The player's position in the world
         /// </summary>
-        public Vector2 Position = new Vector2(200, 200);
+        public Vector2 Position = new Vector2(200, 800);
 
         /// <summary>
         /// How fast the player moves
@@ -73,6 +73,8 @@ namespace MonoGameWindowsStarter
         float t = 0;
 
         Vector2 Velocity;
+
+        Dictionary<float, int> seenPlatforms = new Dictionary<float, int>();
 
         /// <summary>
         /// Constructs a player
@@ -123,6 +125,7 @@ namespace MonoGameWindowsStarter
 
             Position.Y -= Velocity.Y * 6;
             jump(gameTime);
+            keepPlayerInBounds();
         }
 
         /// <summary>
@@ -132,7 +135,23 @@ namespace MonoGameWindowsStarter
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             // Render the santa
+#if VISUAL_DEBUG
+            VisualDebugging.DrawRectangle(spriteBatch, Bounds, Color.Red);
+#endif
             spriteBatch.Draw(spritesheet[frameNumber], Position, sourceRect, Color.White, angle, origin, 0.3f, effects, 0.7f);
+        }
+
+        private void keepPlayerInBounds()
+        {
+            if (Position.X < 0)
+            {
+                Position.X = 600;
+            }
+
+            if (Position.X > 600)
+            {
+                Position.X = 0;
+            }
         }
 
         public void jump(GameTime gameTime)
@@ -149,7 +168,7 @@ namespace MonoGameWindowsStarter
             }
         }
 
-        public void CheckForPlatformCollision(IEnumerable<IBoundable> platforms)
+        public void CheckForPlatformCollision(IEnumerable<IBoundable> platforms, AxisList world, Random random, Sprite pix)
         {
 
             foreach (Platform platform in platforms)
@@ -160,6 +179,14 @@ namespace MonoGameWindowsStarter
                     Velocity.Y = 0;
                     t = 0;
                     isJumping = false;
+
+                    if (!seenPlatforms.ContainsKey(platform.Bounds.X))
+                    {
+                        seenPlatforms.Add(platform.Bounds.X, 1);
+
+                        world.SpawnNewPlatforms(this, random, pix, (List<Platform>)platforms);
+                        return;
+                    }
                 }
             }
         }
