@@ -26,6 +26,7 @@ namespace MonoGameWindowsStarter
 
         Sprite pix;
 
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -126,8 +127,10 @@ namespace MonoGameWindowsStarter
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin();
+            Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, player.Position.Y) - player.Position;
+            var t = Matrix.CreateTranslation(0, offset.Y, 0);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
+            //spriteBatch.Begin();
 
             spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
 
