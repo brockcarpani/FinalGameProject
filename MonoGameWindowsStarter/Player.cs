@@ -77,6 +77,12 @@ namespace MonoGameWindowsStarter
         Dictionary<float, int> seenPlatforms = new Dictionary<float, int>();
 
         /// <summary>
+        /// Gets the actual scaled height and width of the player
+        /// </summary>
+        float FRAME_WIDTH = 0.3f * 407;
+        float FRAME_HEIGHT = 0.3f * 536;
+
+        /// <summary>
         /// Constructs a player
         /// </summary>
         /// <param name="spritesheet">The player's spritesheet</param>
@@ -188,6 +194,40 @@ namespace MonoGameWindowsStarter
                         return;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Checks if the player has collided with the spider
+        /// </summary>
+        /// <param name="spider">Whether the player has collided with the spider</param>
+        /// <returns></returns>
+        public bool collidesWithSpider(Spider spider)
+        {
+            if ((spider.Bounds.X < Bounds.X + FRAME_WIDTH) && (Bounds.X < (spider.Bounds.X + spider.Bounds.Width)) && (spider.Bounds.Y < Bounds.Y + FRAME_HEIGHT) && (Bounds.Y < spider.Bounds.Y + spider.Bounds.Height))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// checks wheter the player has passed the spider
+        /// </summary>
+        /// <param name="spider">Whether the player has passed the spider</param>
+        /// <returns></returns>
+        public bool isAboveSpider(Spider spider)
+        {
+            if(spider.Bounds.Y > Bounds.Y + 470)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
