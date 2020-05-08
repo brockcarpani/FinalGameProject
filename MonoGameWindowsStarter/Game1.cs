@@ -28,6 +28,8 @@ namespace MonoGameWindowsStarter
 
         Sprite pix;
 
+        Arrow arrow;
+
 
         public Game1()
         {
@@ -84,6 +86,10 @@ namespace MonoGameWindowsStarter
             }
             player = new Player(playerTextures);
 
+            // Arrow
+            arrow = new Arrow(player);
+            arrow.LoadContent(Content);
+
             // Platforms
             Texture2D pixel = Content.Load<Texture2D>("pixel");
             pix = new Sprite(new Rectangle(0, 0, 100, 25), pixel);
@@ -121,12 +127,18 @@ namespace MonoGameWindowsStarter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                arrow.spawnArrow();
+            }
+
             // TODO: Add your update logic here
             player.Update(gameTime);
             player.CheckForPlatformCollision(platforms, world, random, pix);
             spider.Update(gameTime);
+            arrow.Update(gameTime);
 
-            if (player.collidesWithSpider(spider) || player.isAboveSpider(spider))
+            if (player.collidesWithSpider(spider) || player.isAboveSpider(spider) || arrow.collidesWithSpider(spider))
             {
                 spider.Bounds.Y = 0;
                 spider.Bounds.X = RandomizeEnemy();
@@ -159,7 +171,12 @@ namespace MonoGameWindowsStarter
 
             // Draw the player
             player.Draw(spriteBatch, gameTime);
+
+            // Draw the spider
             spider.Draw(spriteBatch);
+
+            // Draw the arrow
+            arrow.Draw(spriteBatch);
 
             // Draw the platforms 
             platforms.ForEach(platform =>
