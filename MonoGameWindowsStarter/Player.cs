@@ -76,6 +76,8 @@ namespace MonoGameWindowsStarter
 
         Dictionary<float, int> seenPlatforms = new Dictionary<float, int>();
 
+        float maxReached = float.MaxValue;
+
         /// <summary>
         /// Gets the actual scaled height and width of the player
         /// </summary>
@@ -132,6 +134,7 @@ namespace MonoGameWindowsStarter
             Position.Y -= Velocity.Y * 6;
             jump(gameTime);
             keepPlayerInBounds();
+            checkDeathFall();
         }
 
         /// <summary>
@@ -228,6 +231,21 @@ namespace MonoGameWindowsStarter
             else
             {
                 return false;
+            }
+        }
+
+        private void checkDeathFall()
+        {
+            if (Position.Y < maxReached)
+            {
+                maxReached = Position.Y;
+                Console.WriteLine(maxReached);
+            }
+
+            if (Position.Y > maxReached + 800)
+            {
+                // Game over
+                Console.WriteLine("");
             }
         }
     }
