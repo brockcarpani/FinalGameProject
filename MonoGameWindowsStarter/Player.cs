@@ -191,9 +191,9 @@ namespace MonoGameWindowsStarter
                     t = 0;
                     isJumping = false;
 
-                    if (!seenPlatforms.ContainsKey(platform.Bounds.X))
+                    if (!seenPlatforms.ContainsKey(platform.Bounds.X + platform.Bounds.Y))
                     {
-                        seenPlatforms.Add(platform.Bounds.X, 1);
+                        seenPlatforms.Add(platform.Bounds.X + platform.Bounds.Y, 1);
 
                         world.SpawnNewPlatforms(this, random, pix, (List<Platform>)platforms);
                         return;
@@ -247,7 +247,7 @@ namespace MonoGameWindowsStarter
             if (Position.Y > maxReached + 800)
             {
                 // Game over
-                Console.WriteLine("");
+                Console.WriteLine("Game Over");
             }
         }
     }
