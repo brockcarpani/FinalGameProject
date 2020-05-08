@@ -87,7 +87,7 @@ namespace MonoGameWindowsStarter
             // Platforms
             Texture2D pixel = Content.Load<Texture2D>("pixel");
             pix = new Sprite(new Rectangle(0, 0, 100, 25), pixel);
-            platforms.Add(new Platform(new BoundingRectangle(0, 999, 600, 25), pix));
+            platforms.Add(new Platform(new BoundingRectangle(-100, 999, 1000, 25), pix));
 
             // Add the platforms to the axis list
             world = new AxisList();
@@ -145,8 +145,15 @@ namespace MonoGameWindowsStarter
             //GraphicsDevice.Clear(Color.CornflowerBlue);
             Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - player.Position;
             var t = Matrix.CreateTranslation(0, offset.Y, 0);
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
-            //spriteBatch.Begin();
+
+            if (player.Bounds.Y + player.FRAME_HEIGHT > 500)
+            {
+                spriteBatch.Begin();
+            }
+            else
+            {
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
+            }
 
             spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
 

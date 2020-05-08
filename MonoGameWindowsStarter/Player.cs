@@ -81,8 +81,8 @@ namespace MonoGameWindowsStarter
         /// <summary>
         /// Gets the actual scaled height and width of the player
         /// </summary>
-        float FRAME_WIDTH = 0.3f * 407;
-        float FRAME_HEIGHT = 0.3f * 536;
+        public float FRAME_WIDTH = 0.3f * 407;
+        public float FRAME_HEIGHT = 0.3f * 536;
 
         /// <summary>
         /// Constructs a player
@@ -150,16 +150,18 @@ namespace MonoGameWindowsStarter
             spriteBatch.Draw(spritesheet[frameNumber], Position, sourceRect, Color.White, angle, origin, 0.3f, effects, 0.7f);
         }
 
+        /// <summary>
+        /// Keeps player on screen - loops around
+        /// </summary>
         private void keepPlayerInBounds()
         {
-            if (Position.X < 0)
+            if (Position.X <= 0)
             {
-                Position.X = 600;
+                Position.X = 599 - FRAME_WIDTH;
             }
-
-            if (Position.X > 600)
+            if (Position.X + FRAME_WIDTH >= 600)
             {
-                Position.X = 0;
+                Position.X = 1;
             }
         }
 
