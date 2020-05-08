@@ -24,6 +24,8 @@ namespace MonoGameWindowsStarter
 
         Random random = new Random();
 
+        Spider spider;
+
         Sprite pix;
 
 
@@ -32,6 +34,7 @@ namespace MonoGameWindowsStarter
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             platforms = new List<Platform>();
+            spider = new Spider(this, random);
         }
 
         /// <summary>
@@ -51,6 +54,8 @@ namespace MonoGameWindowsStarter
             backgroundRect.Height = 3584; //graphics.PreferredBackBufferHeight;  //height of frame
             backgroundRect.X = 0;
             backgroundRect.Y = -2560; //0;
+
+            spider.Initialize();
 
             base.Initialize();
         }
@@ -91,6 +96,9 @@ namespace MonoGameWindowsStarter
                 world.AddGameObject(platform);
             }
 
+            //Spider
+            spider.LoadContent(Content);
+
             world.SpawnNewPlatforms(player, random, pix, platforms);
         }
 
@@ -116,6 +124,14 @@ namespace MonoGameWindowsStarter
             // TODO: Add your update logic here
             player.Update(gameTime);
             player.CheckForPlatformCollision(platforms, world, random, pix);
+            spider.Update(gameTime);
+
+            if (player.collidesWithSpider(spider) || player.isAboveSpider(spider))
+            {
+                spider.Bounds.Y = 0;
+                spider.Bounds.X = RandomizeEnemy();
+                
+            }
 
             base.Update(gameTime);
         }
@@ -136,6 +152,7 @@ namespace MonoGameWindowsStarter
 
             // Draw the player
             player.Draw(spriteBatch, gameTime);
+            spider.Draw(spriteBatch);
 
             // Draw the platforms 
             platforms.ForEach(platform =>
@@ -146,5 +163,16 @@ namespace MonoGameWindowsStarter
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+        /// <summary>
+        /// Randomizes an ememy respawn X value
+        /// </summary>
+        /// <returns>the x value for the randomized position</returns>
+        private int RandomizeEnemy()
+        {
+            int temp = random.Next(0, graphics.PreferredBackBufferWidth - (int)spider.Bounds.Width);
+            return temp;
+        }
+
     }
 }
