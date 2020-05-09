@@ -30,7 +30,8 @@ namespace MonoGameWindowsStarter
 
         Arrow arrow;
 
-
+        float spiderDelay;
+        bool updateSpider = false;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -56,6 +57,8 @@ namespace MonoGameWindowsStarter
             backgroundRect.Height = 3584; //graphics.PreferredBackBufferHeight;  //height of frame
             backgroundRect.X = 0;
             backgroundRect.Y = -2560; //0;
+
+            spiderDelay = 15; //15 seconds
 
             spider.Initialize();
 
@@ -135,7 +138,22 @@ namespace MonoGameWindowsStarter
             // TODO: Add your update logic here
             player.Update(gameTime);
             player.CheckForPlatformCollision(platforms, world, random, pix);
-            spider.Update(gameTime);
+
+            
+            ////////////////////////////////
+            // Timer logic and spider update - starts updating (falling) after 15 seconds
+            var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            spiderDelay -= timer;
+            if (spiderDelay <= 0)
+            {
+                updateSpider = true;
+            }
+            if (updateSpider)
+            {
+                spider.Update(gameTime);
+            }
+            ///////////////////////////////
+
             arrow.Update(gameTime);
 
             if (player.collidesWithSpider(spider) || player.isAboveSpider(spider) || arrow.collidesWithSpider(spider))
