@@ -179,7 +179,7 @@ namespace MonoGameWindowsStarter
             }
         }
 
-        public void CheckForPlatformCollision(IEnumerable<IBoundable> platforms, AxisList world, Random random, Sprite pix)
+        public float CheckForPlatformCollision(IEnumerable<IBoundable> platforms, AxisList world, Random random, Sprite pix, float lastPlatfformY)
         {
 
             foreach (Platform platform in platforms)
@@ -196,10 +196,11 @@ namespace MonoGameWindowsStarter
                         seenPlatforms.Add(platform.Bounds.X + platform.Bounds.Y, 1);
 
                         world.SpawnNewPlatforms(this, random, pix, (List<Platform>)platforms);
-                        return;
+                        return platform.Bounds.Y; //
                     }
                 }
             }
+            return lastPlatfformY; //
         }
 
         /// <summary>
