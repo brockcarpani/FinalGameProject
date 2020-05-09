@@ -241,7 +241,7 @@ namespace MonoGameWindowsStarter
             if (Position.Y < maxReached)
             {
                 maxReached = Position.Y;
-                Console.WriteLine(maxReached);
+                //Console.WriteLine(maxReached);
             }
 
             if (Position.Y > maxReached + 800)
