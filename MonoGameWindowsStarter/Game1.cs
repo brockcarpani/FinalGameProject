@@ -32,8 +32,13 @@ namespace MonoGameWindowsStarter
 
         float lastPlatformY = 0;
 
+        int score = 0;
+
         float spiderDelay;
         bool updateSpider = false;
+
+        SpriteFont font;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -79,6 +84,9 @@ namespace MonoGameWindowsStarter
 #if VISUAL_DEBUG
             VisualDebugging.LoadContent(Content);
 #endif
+
+            // Load font
+            font = Content.Load<SpriteFont>("font");
 
             // Background
             backgroundTexture = Content.Load<Texture2D>("Background-3584");
@@ -139,8 +147,14 @@ namespace MonoGameWindowsStarter
 
             // TODO: Add your update logic here
             player.Update(gameTime);
+
+            float tempPlatformY = lastPlatformY;
             lastPlatformY = player.CheckForPlatformCollision(platforms, world, random, pix, lastPlatformY); //
 
+            if (tempPlatformY != lastPlatformY)
+            {
+                score++;
+            }
             
             ////////////////////////////////
             // Timer logic and spider update - starts updating (falling) after 15 seconds
@@ -187,7 +201,10 @@ namespace MonoGameWindowsStarter
                 spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
             }
 
+
             spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
+
+            spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, lastPlatformY - 800), Color.White);
 
             // Draw the player
             player.Draw(spriteBatch, gameTime);

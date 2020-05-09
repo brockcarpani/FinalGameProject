@@ -73,6 +73,13 @@
 /processorParam:TextureFormat=Color
 /build:Background-Long.png
 
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font.spritefont
+
 #begin Jump__000.png
 /importer:TextureImporter
 /processor:TextureProcessor
