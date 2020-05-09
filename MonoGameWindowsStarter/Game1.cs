@@ -30,6 +30,8 @@ namespace MonoGameWindowsStarter
 
         Arrow arrow;
 
+        float lastPlatformY = 0;
+
         float spiderDelay;
         bool updateSpider = false;
         public Game1()
@@ -137,7 +139,7 @@ namespace MonoGameWindowsStarter
 
             // TODO: Add your update logic here
             player.Update(gameTime);
-            player.CheckForPlatformCollision(platforms, world, random, pix);
+            lastPlatformY = player.CheckForPlatformCollision(platforms, world, random, pix, lastPlatformY); //
 
             
             ////////////////////////////////
@@ -173,7 +175,7 @@ namespace MonoGameWindowsStarter
         protected override void Draw(GameTime gameTime)
         {
             //GraphicsDevice.Clear(Color.CornflowerBlue);
-            Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - player.Position;
+            Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - new Vector2(player.Position.X, lastPlatformY - 300);
             var t = Matrix.CreateTranslation(0, offset.Y, 0);
 
             if (player.Bounds.Y + player.FRAME_HEIGHT > 500)
