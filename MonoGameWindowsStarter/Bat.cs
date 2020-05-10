@@ -73,7 +73,7 @@ namespace MonoGameWindowsStarter
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            Bounds.Y += random.Next(2, 5);
+            Bounds.Y += random.Next(2, 4);
 
             if (Bounds.Y > (gameHeight - (int)Bounds.Height))
             {
