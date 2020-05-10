@@ -54,7 +54,7 @@ namespace MonoGameWindowsStarter
         {
             Bounds.Width = 40;
             Bounds.Height = 40;
-            Bounds.Y = 0;
+            Bounds.Y = -800;
             Bounds.X = RandomizeX();//randomize
         }
 
