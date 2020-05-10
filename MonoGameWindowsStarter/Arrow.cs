@@ -37,8 +37,8 @@ namespace MonoGameWindowsStarter
         public Arrow(Player player)
         {
             this.player = player;
-            Bounds.Width = 50;
-            Bounds.Height = 200;
+            Bounds.Width = 20;
+            Bounds.Height = 100;
             Bounds.Y = 0;
             Bounds.X = 0;
         }
@@ -79,7 +79,7 @@ namespace MonoGameWindowsStarter
         {
             if (!isFlying)
             {
-                Bounds.X = player.Bounds.X + 10;
+                Bounds.X = player.Bounds.X + 40;
                 Bounds.Y = player.Bounds.Y;
                 release = Math.Abs(player.Bounds.Y);
                 isFlying = true;
