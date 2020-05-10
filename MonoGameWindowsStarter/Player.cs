@@ -28,12 +28,12 @@ namespace MonoGameWindowsStarter
             Height = 536
         };
 
-        public BoundingRectangle Bounds => new BoundingRectangle(Position - origin, 75, 144);
+        public BoundingRectangle Bounds => new BoundingRectangle(Position - origin, 75, 110);
 
         /// <summary>
         /// The origin of the santa sprite
         /// </summary>
-        Vector2 origin = new Vector2(-20, 1); //61
+        Vector2 origin = new Vector2(-20, -20); //61
 
         /// <summary>
         /// The angle the santa should tilt
@@ -185,7 +185,7 @@ namespace MonoGameWindowsStarter
             {
                 if (Bounds.CollidesWith(platform.Bounds))
                 {
-                    Position.Y = platform.Bounds.Y -this.Bounds.Height - 1;
+                    Position.Y = platform.Bounds.Y -this.Bounds.Height - 21;
                     Velocity.Y = 0;
                     t = 0;
                     isJumping = false;
