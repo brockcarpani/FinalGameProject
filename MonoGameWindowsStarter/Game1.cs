@@ -209,15 +209,23 @@ namespace MonoGameWindowsStarter
 
             arrow.Update(gameTime);
 
-            if (player.collidesWithSpider(spider) || player.isAboveSpider(spider) || arrow.collidesWithSpider(spider))
+            if (player.isAboveSpider(spider) || arrow.collidesWithSpider(spider))
             {
                 spider.Bounds.Y = spawnLocation;
                 spider.Bounds.X = RandomizeEnemy(); 
             }
-            if (player.collidesWithBat(bat) || player.isAboveBat(bat) || arrow.collidesWithBat(bat))
+            if (player.collidesWithSpider(spider))
+            {
+                Console.WriteLine("Game Over");
+            }
+            if (player.isAboveBat(bat) || arrow.collidesWithBat(bat))
             {
                 bat.Bounds.Y = spawnLocation;
                 bat.Bounds.X = RandomizeEnemy();
+            }
+            if (player.collidesWithBat(bat))
+            {
+                Console.WriteLine("Game Over");
             }
 
             if (player.Bounds.Y <= -2000)
