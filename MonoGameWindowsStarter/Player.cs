@@ -278,7 +278,7 @@ namespace MonoGameWindowsStarter
                 //Console.WriteLine(maxReached);
             }
 
-            if (Position.Y > maxReached + 800)
+            if (Position.Y > maxReached + 600)
             {
                 // Game over
                 Console.WriteLine("Game Over");
