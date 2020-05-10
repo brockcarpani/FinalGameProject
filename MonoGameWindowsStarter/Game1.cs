@@ -25,6 +25,7 @@ namespace MonoGameWindowsStarter
         Random random = new Random();
 
         Spider spider;
+        Bat bat;
 
         Sprite pix;
 
@@ -36,6 +37,10 @@ namespace MonoGameWindowsStarter
 
         float spiderDelay;
         bool updateSpider = false;
+        float batDelay;
+        bool updateBat = false;
+        
+        int spawnLocation;
 
         SpriteFont font;
 
@@ -45,6 +50,7 @@ namespace MonoGameWindowsStarter
             Content.RootDirectory = "Content";
             platforms = new List<Platform>();
             spider = new Spider(this, random);
+            bat = new Bat(this, random);
         }
 
         /// <summary>
@@ -66,8 +72,10 @@ namespace MonoGameWindowsStarter
             backgroundRect.Y = -2560; //0;
 
             spiderDelay = 15; //15 seconds
+            batDelay = 25; //25 seconds
 
             spider.Initialize();
+            bat.Initialize();
 
             base.Initialize();
         }
@@ -117,6 +125,8 @@ namespace MonoGameWindowsStarter
 
             //Spider
             spider.LoadContent(Content);
+            //Bat
+            bat.LoadContent(Content);
 
             world.SpawnNewPlatforms(player, random, pix, platforms);
         }
@@ -148,6 +158,8 @@ namespace MonoGameWindowsStarter
             // TODO: Add your update logic here
             player.Update(gameTime);
 
+            spawnLocation = (int)player.Bounds.Y - 650;
+
             float tempPlatformY = lastPlatformY;
             lastPlatformY = player.CheckForPlatformCollision(platforms, world, random, pix, lastPlatformY); //
 
@@ -155,7 +167,7 @@ namespace MonoGameWindowsStarter
             {
                 score++;
             }
-            
+            spawnLocation = (int)player.Bounds.Y - 650;
             ////////////////////////////////
             // Timer logic and spider update - starts updating (falling) after 15 seconds
             var timer = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -169,14 +181,32 @@ namespace MonoGameWindowsStarter
                 spider.Update(gameTime);
             }
             ///////////////////////////////
+            
+            ////////////////////////////////
+            // Timer logic and bat update - starts updating (falling) after 25 seconds
+            var time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            batDelay -= time;
+            if (batDelay <= 0)
+            {
+                updateBat = true;
+            }
+            if (updateBat)
+            {
+                bat.Update(gameTime);
+            }
+            ///////////////////////////////
 
             arrow.Update(gameTime);
 
             if (player.collidesWithSpider(spider) || player.isAboveSpider(spider) || arrow.collidesWithSpider(spider))
             {
-                spider.Bounds.Y = 0;
-                spider.Bounds.X = RandomizeEnemy();
-                
+                spider.Bounds.Y = spawnLocation;
+                spider.Bounds.X = RandomizeEnemy(); 
+            }
+            if (player.collidesWithBat(bat) || player.isAboveBat(bat) || arrow.collidesWithBat(bat))
+            {
+                bat.Bounds.Y = spawnLocation;
+                bat.Bounds.X = RandomizeEnemy();
             }
 
             base.Update(gameTime);
@@ -214,6 +244,9 @@ namespace MonoGameWindowsStarter
 
             // Draw the arrow
             arrow.Draw(spriteBatch);
+
+            //Draw the bat
+            bat.Draw(spriteBatch);
 
             // Draw the platforms 
             platforms.ForEach(platform =>

@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Arrow.cs" />
     <Compile Include="AxisList.cs" />
+    <Compile Include="Bat.cs" />
     <Compile Include="BoundingRectangle.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="IBoundable.cs" />

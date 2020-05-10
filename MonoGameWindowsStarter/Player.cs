@@ -221,6 +221,23 @@ namespace MonoGameWindowsStarter
         }
 
         /// <summary>
+        /// Checks if the player has collided with the bat
+        /// </summary>
+        /// <param name="spider">Whether the player has collided with the bat</param>
+        /// <returns></returns>
+        public bool collidesWithBat(Bat bat)
+        {
+            if ((bat.Bounds.X < Bounds.X + FRAME_WIDTH) && (Bounds.X < (bat.Bounds.X + bat.Bounds.Width)) && (bat.Bounds.Y < Bounds.Y + FRAME_HEIGHT) && (Bounds.Y < bat.Bounds.Y + bat.Bounds.Height))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// checks wheter the player has passed the spider
         /// </summary>
         /// <param name="spider">Whether the player has passed the spider</param>
@@ -228,6 +245,23 @@ namespace MonoGameWindowsStarter
         public bool isAboveSpider(Spider spider)
         {
             if(spider.Bounds.Y > Bounds.Y + 470)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// checks wheter the player has passed the bat
+        /// </summary>
+        /// <param name="spider">Whether the player has passed the bat</param>
+        /// <returns></returns>
+        public bool isAboveBat(Bat bat)
+        {
+            if (bat.Bounds.Y > Bounds.Y + 470)
             {
                 return true;
             }
