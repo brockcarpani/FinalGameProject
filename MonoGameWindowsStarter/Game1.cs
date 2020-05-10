@@ -73,8 +73,8 @@ namespace MonoGameWindowsStarter
             backgroundRect.X = 0;
             backgroundRect.Y = -2560; //0;
 
-            spiderDelay = 15; //15 seconds
-            batDelay = 25; //25 seconds
+            spiderDelay = 10; //10 seconds
+            batDelay = 20; //20 seconds
 
             spider.Initialize();
             bat.Initialize();
@@ -213,6 +213,11 @@ namespace MonoGameWindowsStarter
                 bat.Bounds.X = RandomizeEnemy();
             }
 
+            if (player.Bounds.Y <= -2000)
+            {
+                restartLevel();
+            }
+
             base.Update(gameTime);
         }
 
@@ -270,5 +275,20 @@ namespace MonoGameWindowsStarter
             return temp;
         }
 
+        private void restartLevel()
+        {
+            Initialize();
+
+            platforms = new List<Platform>();
+
+            platforms.Add(new Platform(new BoundingRectangle(-100, 999, 1000, 25), pix));
+
+            // Add the platforms to the axis list
+            world = new AxisList();
+            foreach (Platform platform in platforms)
+            {
+                world.AddGameObject(platform);
+            }
+        }
     }
 }
