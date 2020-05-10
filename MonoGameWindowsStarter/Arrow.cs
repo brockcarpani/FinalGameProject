@@ -87,13 +87,30 @@ namespace MonoGameWindowsStarter
         }
 
         /// <summary>
-        /// Checks if the player has collided with the spider
+        /// Checks if the arrow has collided with the spider
         /// </summary>
-        /// <param name="spider">Whether the player has collided with the spider</param>
+        /// <param name="spider">Whether the arrow has collided with the spider</param>
         /// <returns></returns>
         public bool collidesWithSpider(Spider spider)
         {
             if ((spider.Bounds.X < Bounds.X + Bounds.Width) && (Bounds.X < (spider.Bounds.X + spider.Bounds.Width)) && (spider.Bounds.Y < Bounds.Y + Bounds.Height) && (Bounds.Y < spider.Bounds.Y + spider.Bounds.Height))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the arrow has collided with the bat
+        /// </summary>
+        /// <param name="spider">Whether the player has collided with the bat</param>
+        /// <returns></returns>
+        public bool collidesWithBat(Bat bat)
+        {
+            if ((bat.Bounds.X < Bounds.X + Bounds.Width) && (Bounds.X < (bat.Bounds.X + bat.Bounds.Width)) && (bat.Bounds.Y < Bounds.Y + Bounds.Height) && (Bounds.Y < bat.Bounds.Y + bat.Bounds.Height))
             {
                 return true;
             }

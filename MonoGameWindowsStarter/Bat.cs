@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameWindowsStarter
 {
-    public class Spider
+    public class Bat
     {
         Game1 game;
 
@@ -41,7 +41,7 @@ namespace MonoGameWindowsStarter
         /// </summary>
         /// <param name="game">The game the spider belongs to</param>
         /// <param name="r">Random object used for spawning</param>
-        public Spider(Game1 game, Random r)
+        public Bat(Game1 game, Random r)
         {
             this.game = game;
             random = r;
@@ -52,8 +52,8 @@ namespace MonoGameWindowsStarter
         /// </summary>
         public void Initialize()
         {
-            Bounds.Width = 40;
-            Bounds.Height = 40;
+            Bounds.Width = 45;
+            Bounds.Height = 45;
             Bounds.Y = 0;
             Bounds.X = RandomizeX();//randomize
         }
@@ -64,7 +64,7 @@ namespace MonoGameWindowsStarter
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>("spider");
+            texture = content.Load<Texture2D>("bat");
         }
 
         /// <summary>
