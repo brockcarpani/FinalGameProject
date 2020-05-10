@@ -104,6 +104,12 @@
 /processorParam:TextureFormat=Color
 /build:grass.png
 
+#begin Indiana Jones.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Indiana Jones.wav
+
 #begin Jump__000.png
 /importer:TextureImporter
 /processor:TextureProcessor
