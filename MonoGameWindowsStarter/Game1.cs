@@ -48,6 +48,10 @@ namespace MonoGameWindowsStarter
         SpriteFont font;
 
         SoundEffect indianaJonesMusic;
+        bool isFirstRun = true;
+
+        bool isGameOver = false;
+        bool fellToDeath = false;
 
         public Game1()
         {
@@ -99,8 +103,13 @@ namespace MonoGameWindowsStarter
 #endif
 
             // Load and play music
-            indianaJonesMusic = Content.Load<SoundEffect>("Indiana Jones");
-            indianaJonesMusic.Play();
+            if (isFirstRun)
+            {
+                indianaJonesMusic = Content.Load<SoundEffect>("Indiana Jones");
+                indianaJonesMusic.Play();
+                isFirstRun = false;
+            }
+            
 
             // Load font
             font = Content.Load<SpriteFont>("font");
@@ -168,6 +177,8 @@ namespace MonoGameWindowsStarter
             {
                 score = 0;
                 restartLevel();
+                isGameOver = false;
+                fellToDeath = false;
             }
 
             // TODO: Add your update logic here
@@ -223,6 +234,7 @@ namespace MonoGameWindowsStarter
             if (player.collidesWithSpider(spider))
             {
                 Console.WriteLine("Game Over");
+                isGameOver = true;
             }
             if (player.isAboveBat(bat) || arrow.collidesWithBat(bat))
             {
@@ -232,7 +244,10 @@ namespace MonoGameWindowsStarter
             if (player.collidesWithBat(bat))
             {
                 Console.WriteLine("Game Over");
+                isGameOver = true;
             }
+
+            fellToDeath = player.checkDeathFall();
 
             if (player.Bounds.Y <= -2000)
             {
@@ -248,41 +263,56 @@ namespace MonoGameWindowsStarter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
-            Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - new Vector2(player.Position.X, lastPlatformY - 300);
-            var t = Matrix.CreateTranslation(0, offset.Y, 0);
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
-           
-            spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
-
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, lastPlatformY - 800), Color.White);
-
-            // Draw the player
-            player.Draw(spriteBatch, gameTime);
-
-            // Draw the arrow
-            arrow.Draw(spriteBatch);
-
-            // Draw the spider
-            if (drawSpider)
+            if (isGameOver || fellToDeath)
             {
-                spider.Draw(spriteBatch);
+                GraphicsDevice.Clear(Color.Black);
+
+                spriteBatch.Begin();
+
+                spriteBatch.DrawString(font, "Game Over", new Vector2(graphics.PreferredBackBufferWidth / 2 - 140, graphics.PreferredBackBufferHeight / 2 - 100), Color.White);
+                spriteBatch.DrawString(font, "Score: " + score, new Vector2(graphics.PreferredBackBufferWidth /2 - 100, graphics.PreferredBackBufferHeight /2), Color.White);
+                spriteBatch.DrawString(font, "Press tab to play again", new Vector2(graphics.PreferredBackBufferWidth / 2 - 260, graphics.PreferredBackBufferHeight / 2 + 100), Color.White);
+
+                spriteBatch.End();
             }
-            //Draw the bat
-            if (drawBat)
+            else
             {
-                bat.Draw(spriteBatch);
+                Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - new Vector2(player.Position.X, lastPlatformY - 300);
+                var t = Matrix.CreateTranslation(0, offset.Y, 0);
+
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
+
+                spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
+
+                spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, lastPlatformY - 800), Color.White);
+
+                // Draw the player
+                player.Draw(spriteBatch, gameTime);
+
+                // Draw the arrow
+                arrow.Draw(spriteBatch);
+
+                // Draw the spider
+                if (drawSpider)
+                {
+                    spider.Draw(spriteBatch);
+                }
+                //Draw the bat
+                if (drawBat)
+                {
+                    bat.Draw(spriteBatch);
+                }
+
+
+                // Draw the platforms 
+                platforms.ForEach(platform =>
+                {
+                    platform.Draw(spriteBatch);
+                });
+
+                spriteBatch.End();
             }
             
-
-            // Draw the platforms 
-            platforms.ForEach(platform =>
-            {
-                platform.Draw(spriteBatch);
-            });
-
-            spriteBatch.End();
             base.Draw(gameTime);
         }
 
