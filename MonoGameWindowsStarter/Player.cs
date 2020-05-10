@@ -134,7 +134,6 @@ namespace MonoGameWindowsStarter
             Position.Y -= Velocity.Y * 6;
             jump(gameTime);
             keepPlayerInBounds();
-            checkDeathFall();
         }
 
         /// <summary>
@@ -271,7 +270,7 @@ namespace MonoGameWindowsStarter
             }
         }
 
-        private void checkDeathFall()
+        public bool checkDeathFall()
         {
             if (Position.Y < maxReached)
             {
@@ -283,7 +282,10 @@ namespace MonoGameWindowsStarter
             {
                 // Game over
                 Console.WriteLine("Game Over");
+                return true;
             }
+
+            return false;
         }
     }
 }
