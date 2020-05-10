@@ -69,7 +69,7 @@ namespace MonoGameWindowsStarter
             graphics.ApplyChanges();
 
             backgroundRect.Width = graphics.PreferredBackBufferWidth;  //width of frame
-            backgroundRect.Height = 3584; //graphics.PreferredBackBufferHeight;  //height of frame
+            backgroundRect.Height = 4608; //graphics.PreferredBackBufferHeight;  //height of frame
             backgroundRect.X = 0;
             backgroundRect.Y = -2560; //0;
 
@@ -114,7 +114,7 @@ namespace MonoGameWindowsStarter
             arrow.LoadContent(Content);
 
             // Platforms
-            Texture2D pixel = Content.Load<Texture2D>("pixel");
+            Texture2D pixel = Content.Load<Texture2D>("sand");
             pix = new Sprite(new Rectangle(0, 0, 100, 25), pixel);
             platforms.Add(new Platform(new BoundingRectangle(-100, 999, 1000, 25), pix));
 
