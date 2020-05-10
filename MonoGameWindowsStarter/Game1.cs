@@ -39,6 +39,8 @@ namespace MonoGameWindowsStarter
         bool updateSpider = false;
         float batDelay;
         bool updateBat = false;
+        bool drawSpider = false;
+        bool drawBat = false;
         
         int spawnLocation;
 
@@ -174,6 +176,7 @@ namespace MonoGameWindowsStarter
             spiderDelay -= timer;
             if (spiderDelay <= 0)
             {
+                drawSpider = true;
                 updateSpider = true;
             }
             if (updateSpider)
@@ -188,6 +191,7 @@ namespace MonoGameWindowsStarter
             batDelay -= time;
             if (batDelay <= 0)
             {
+                drawBat = true;
                 updateBat = true;
             }
             if (updateBat)
@@ -222,16 +226,8 @@ namespace MonoGameWindowsStarter
             Vector2 offset = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2) - new Vector2(player.Position.X, lastPlatformY - 300);
             var t = Matrix.CreateTranslation(0, offset.Y, 0);
 
-            if (player.Bounds.Y + player.FRAME_HEIGHT > 500)
-            {
-                spriteBatch.Begin();
-            }
-            else
-            {
-                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
-            }
-
-
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
+           
             spriteBatch.Draw(backgroundTexture, backgroundRect, Color.White);
 
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(0, lastPlatformY - 800), Color.White);
@@ -239,14 +235,20 @@ namespace MonoGameWindowsStarter
             // Draw the player
             player.Draw(spriteBatch, gameTime);
 
-            // Draw the spider
-            spider.Draw(spriteBatch);
-
             // Draw the arrow
             arrow.Draw(spriteBatch);
 
+            // Draw the spider
+            if (drawSpider)
+            {
+                spider.Draw(spriteBatch);
+            }
             //Draw the bat
-            bat.Draw(spriteBatch);
+            if (drawBat)
+            {
+                bat.Draw(spriteBatch);
+            }
+            
 
             // Draw the platforms 
             platforms.ForEach(platform =>
