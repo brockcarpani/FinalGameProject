@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MonoGameWindowsStarter
 {
@@ -45,6 +46,8 @@ namespace MonoGameWindowsStarter
         int spawnLocation;
 
         SpriteFont font;
+
+        SoundEffect indianaJonesMusic;
 
         public Game1()
         {
@@ -94,6 +97,10 @@ namespace MonoGameWindowsStarter
 #if VISUAL_DEBUG
             VisualDebugging.LoadContent(Content);
 #endif
+
+            // Load and play music
+            indianaJonesMusic = Content.Load<SoundEffect>("Indiana Jones");
+            indianaJonesMusic.Play();
 
             // Load font
             font = Content.Load<SpriteFont>("font");
