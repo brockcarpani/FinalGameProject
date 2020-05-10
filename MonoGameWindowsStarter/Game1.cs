@@ -164,6 +164,12 @@ namespace MonoGameWindowsStarter
                 arrow.spawnArrow();
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Tab))
+            {
+                score = 0;
+                restartLevel();
+            }
+
             // TODO: Add your update logic here
             player.Update(gameTime);
 
