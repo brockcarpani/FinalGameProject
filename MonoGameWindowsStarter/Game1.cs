@@ -179,6 +179,8 @@ namespace MonoGameWindowsStarter
                 restartLevel();
                 isGameOver = false;
                 fellToDeath = false;
+                spiderDelay = 10;
+                batDelay = 20;
             }
 
             // TODO: Add your update logic here
